@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /* user-info {
+            width: 100px;
+        } */
+    </style>
+</head>
+
+<body>
+    <my-component></my-component>
+    <user-info name="lanxiaojing" gender="w"></user-info>
+    <template id="userInfoTemplate">
+        <style>
+            :host {
+                display: flex;
+                align-items: center;
+                width: 450px;
+                height: 180px;
+                background-color: #d4d4d4;
+                border: 1px solid #d5d5d5;
+                box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+                border-radius: 3px;
+                overflow: hidden;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
+            .name {
+                font-size: 20px;
+            }
+
+            .gender {
+                font-size: 12px;
+                color: #fff;
+            }
+        </style>
+
+        <div class="container">
+            <p class="name"></p>
+            <p class="gender"></p>
+        </div>
+    </template>
+
+    <script>
+        // 基本示例
+        class UserInfo extends HTMLElement {
+            constructor() {
+                super();
+                var shadow = this.attachShadow({ mode: 'closed' });
+
+                var templateElem = document.getElementById('userInfoTemplate');
+                var content = templateElem.content.cloneNode(true);
+                content.querySelector('.container>.name').innerText = this.getAttribute('name')
+                content.querySelector('.container>.gender').innerText = this.getAttribute('gender')
+                var This = this
+                content.querySelector('.container>.gender').onclick = function() {
+                    console.log(This.getAttribute('gender'));
+                }
+
+                shadow.appendChild(content);
+
+            }
+        }
+        customElements.define('user-info', UserInfo);
+
+        // 生命周期示例
+        class MyComponent extends HTMLElement {
+            constructor() {
+                super()
+            }
+            connectedCallback() {
+                console.log('connectedCallback');
+                this.innerHTML = `<h1>Hello world</h1>`;
+            }
+        }
+        customElements.define('my-component', MyComponent);
+    </script>
+</body>
+
+</html>
